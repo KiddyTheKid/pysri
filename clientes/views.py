@@ -1,9 +1,9 @@
-from clientes.models import Clientes
-from clientes.serializers import ClientesSerializer
+from clientes.models import Cliente
+from clientes.serializers import ClienteSerializer
 from rest_framework import permissions, viewsets
 
 
 class ClientesViewSet(viewsets.ModelViewSet):
-    queryset = Clientes.objects.all()
-    serializer_class = ClientesSerializer
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
     permission_classes = [permissions.IsAuthenticated]
