@@ -13,6 +13,6 @@ class Cliente(models.Model):
     }, default="05", max_length=2)
     identificacion = models.CharField(max_length=13, default="9999999999")
     razon_social = models.CharField(max_length=250)
-    direccion = models.CharField(max_length=250)
-    telefono = models.CharField(max_length=20)
+    direccion = models.CharField(max_length=250, null=True, blank=True)
+    telefono = models.CharField(max_length=20, null=True, blank=True)
     correo = models.EmailField(max_length=60)

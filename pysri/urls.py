@@ -5,11 +5,15 @@ from rest_framework import routers, serializers, viewsets, permissions
 from rest_framework.authtoken import views
 from pysri.views import UserViewSet
 from clientes.views import ClientesViewSet
+from productos.views import ProductosViewSet
+from empresas.views import EmpresaViewSet
 
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'clientes', ClientesViewSet)
+router.register(r'productos', ProductosViewSet)
+router.register(r'empresas', EmpresaViewSet)
 
 
 urlpatterns = [
