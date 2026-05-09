@@ -1,7 +1,7 @@
 [project]
 name = "pysri"
 version = "0.1.0"
-description = "Sistema de facturación electronica basado en FSri de XaviMontero"
+description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
