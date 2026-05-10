@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 import uuid
 
 
@@ -29,7 +30,20 @@ class Empresa(models.Model):
     email_notificacion = models.EmailField(
         max_length=60, null=True, blank=True)
     certificate = models.CharField(max_length=250, null=True, blank=True)
-    certificate_password = models.CharField(max_length=250, null=True, blank=True)
+    certificate_password = models.CharField(
+        max_length=250, null=True, blank=True)
     user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, **kwargs):
+        self.certificate_password = make_password(self.certificate_password)
+        super().save(**kwargs)
+
+
+class Certificado(models.Model):
+    empresa_id = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    certificate = models.CharField(max_length=250)
+    certificate_password = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
