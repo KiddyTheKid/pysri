@@ -3,7 +3,8 @@ import uuid
 
 
 class Cliente(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    uuid = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     tipo_identificacion_id = models.CharField(choices={
         "04": "RUC",
         "05": "CÉDULA",

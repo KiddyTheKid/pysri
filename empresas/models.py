@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
+from cryptography.fernet import Fernet
+from django.conf import settings
 import uuid
 
 
@@ -33,12 +35,34 @@ class Empresa(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('user_id', 'ruc')
+
+
 class Certificado(models.Model):
-    empresa_id = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    uuid = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    empresa_id = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, related_name='certificados')
     certificate = models.CharField(max_length=250)
-    certificate_password = models.CharField(max_length=250)
+    _enc_certificate_password = models.TextField(
+        db_column='cerificate_password', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    def save(self, **kwargs):
-        self.certificate_password = make_password(self.certificate_password)
+
+    @property
+    def certificate_password(self):
+        if not self._enc_certificate_password:
+            return None
+        f = Fernet(settings.ENCRYPTION_KEY.encode())
+        return f.decrypt(self._enc_certificate_password.encode()).decode()
+
+    @certificate_password.setter
+    def set_certificate_password(self, password):
+        if password is None:
+            return
+        f = Fernet(settings.ENCRYPTION_KEY.encode())
+        self._enc_certificate_password = f.encrypt(password.encode()).decode()
+
+    class Meta:
+        unique_together = ('empresa_id', 'certificate')
