@@ -4,7 +4,8 @@ import uuid
 
 class Producto(models.Model):
     uuid = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True
+    )
     codigo = models.CharField(max_length=250)
     descripcion = models.CharField(max_length=250)
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
